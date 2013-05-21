@@ -5,6 +5,14 @@
 #include <stdlib.h>
 #include <time.h>
 
+//#include <cavelib/LayoutManagers/TableLayout.h>
+//#include <cavelib/LayoutManagers/FlowLayout.h>
+//#include <cavelib/Components/Panel.h>
+//#include <cavelib/Components/Label.h>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "Vector3D.h"
 #include "ProcessFile.h"
 #include "ObjModel.h"
@@ -71,12 +79,18 @@ void PDBFileDemo::init()
 	const std::string vjhead("MainUserHead");
 	const std::string but0("LeftButton");
 	const std::string but1("RightButton");
+	const std::string butf5("MiddleButton");
+	const std::string butDown("KeyPageDown");
+	const std::string butUp("KeyPageUp");
 
 	mWand.init(wand);
 	mHead.init(vjhead);
 	mButton0.init(but0);
 	mButton1.init(but1);
-	
+	mKeyPageDown.init(butDown);
+	mKeyPageUp.init(butUp);
+	mKeyF5.init(butf5);
+
 	//tickCount = 0;
 
 //	glutInit(&argc, argv);
@@ -110,7 +124,7 @@ void PDBFileDemo::contextInit()
 
 	if(fileToLoad.empty())
 	{
-		fileToLoad = "data/proteins/1DW5.pdb"; //3PTA //1DW5f
+		fileToLoad = "data/proteins/Test.pdb"; //3PTA //1DW5f
 		cout << "Error loading file, loading 1DW5.pdb instead:" << fileToLoad << endl;
 	}
 	
@@ -270,6 +284,34 @@ void PDBFileDemo::preFrame()
 
 	glm::mat4 headMat = mHead.getData();
 	glm::vec4 headPos = headMat * glm::vec4(0,0,0,1);
+	
+		//Main menu actions
+	if(menuPanel)
+	{
+		glm::mat4 mat = mWand.getData();
+
+		glm::vec4 origin = mat * glm::vec4(0,0,0,1);
+		glm::vec4 point = mat * glm::vec4(0,0,-1,1);
+		glm::vec4 diff = point - origin;
+
+		menuPanel->setSelector(Ray(glm::vec3(origin[0], origin[1], origin[2]), glm::vec3(diff[0], diff[1], diff[2])));
+
+		DigitalState data = mButton0.getData();
+		
+
+		if(data == TOGGLE_ON)
+		{
+			menuPanel->mouseDown();
+		}
+		else if(data == TOGGLE_OFF)
+		{
+			menuPanel->mouseUp();
+		}
+		else if (data == ON)
+		{
+		}
+	}
+
 
 	if(mButton0.getData() == TOGGLE_ON && headPos[2] > 1.3)// && tickCount == 0)
 	{
@@ -341,6 +383,69 @@ void PDBFileDemo::preFrame()
 			positioningZ += glm::abs(diff[2])/50;
 
 	}
+	else if(processFile != NULL && processFile->Menu->ModeAtomInfo && mButton0.getData() == TOGGLE_ON)
+	{
+				glm::vec3 wandPos = glm::vec3(wandPos[0], wandPos[1], wandPos[2]);
+				for(int i = 0; i < processFile->Atoms.size(); i++)
+				{
+					if(processFile->Atoms.at(i)->location->X == wandPos.x && 
+						processFile->Atoms.at(i)->location->Y == wandPos.y && 
+						processFile->Atoms.at(i)->location->Z == wandPos.z)
+					{
+					/*	rootPanel = new Panel(new FlowLayoutManager());
+
+						rootPanel->add(new Label("Name: " + processFile->Atoms.at(i)->atomName));
+						rootPanel->add(new Label("Charge: " + processFile->Atoms.at(i)->charge));
+						rootPanel->add(new Label("Chain number: " + processFile->Atoms.at(i)->chainNumber));
+						rootPanel->add(new Label("Element: " + processFile->Atoms.at(i)->element));
+						rootPanel->add(new Label("Residue name: " + processFile->Atoms.at(i)->residueName));
+						rootPanel->add(new Label("Residue sequence number: " + processFile->Atoms.at(i)->residueSeqNumber));
+
+						rootPanel->reposition(0,0,0.6f,0.9f);
+
+						renderMatrix = glm::mat4();
+						renderMatrix = glm::translate(renderMatrix, glm::vec3(-1.5,-0.6f,-0));
+						renderMatrix = glm::rotate(renderMatrix, 90.0f, glm::vec3(0,1,0));
+						//p->add(selectDemoButton = new SelectDemoButton(demo, "Particle"));
+						
+						processFile->Atoms.at(i)->atomName;
+						processFile->Atoms.at(i)->charge;
+						processFile->Atoms.at(i)->chainNumber;
+						processFile->Atoms.at(i)->element;
+						processFile->Atoms.at(i)->residueName;
+						processFile->Atoms.at(i)->residueSeqNumber;
+						*/
+						break;
+					}
+				}
+	}
+	else if(processFile != NULL && processFile->Menu->ModeMeasureDistance && mButton0.getData() == TOGGLE_ON)
+	{
+				glm::vec3 wandPos = glm::vec3(wandPos[0], wandPos[1], wandPos[2]);
+				for(int i = 0; i < processFile->Atoms.size(); i++)
+				{
+					
+					if(processFile->Atoms.at(i)->location->X == wandPos.x && 
+						processFile->Atoms.at(i)->location->Y == wandPos.y && 
+						processFile->Atoms.at(i)->location->Z == wandPos.z)
+					{
+						
+						if(atom1selected)
+						{
+							atom2 = *processFile->Atoms.at(i);
+							//TODO: kwadraat nemen van de dingen tussen haakjes
+							//(atom1.location->X - atom2.location->X) + (atom1.location->Y - atom2.location->Y) + (atom1.location->Z - atom2.location->Z);
+						}
+						else
+						{
+							atom1 = *processFile->Atoms.at(i);
+						}
+						atom1selected=!atom1selected;
+						break;
+					}
+				}
+	}
+
 }
 
 void PDBFileDemo::bufferPreDraw()
@@ -1121,6 +1226,8 @@ void PDBFileDemo::draw(glm::mat4 projectionMatrix)
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	updateLightPosition(headPos[0],headPos[1],headPos[2]);
+
+	menuPanel->draw();
 
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
