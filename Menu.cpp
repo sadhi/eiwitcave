@@ -115,7 +115,8 @@ void cMenu::resetModes(void)
 	ModeLow = false;
 	ModeTranslation = false;
 	Mode3DSelectie = false;
-	ModeSelectSingelAtom = true;
+	ModeSelectSingelAtom = false;
+	ModeDistanceMeasure = true;
 }
 
 void cMenu::resetButtons(void)
