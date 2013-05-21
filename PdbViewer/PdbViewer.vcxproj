@@ -72,9 +72,6 @@
       <AdditionalDependencies>freeimage.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)\Libraries\FreeImage;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
-    <PostBuildEvent>
-      <Command>xcopy /y $(TargetPath) $(SolutionDir)\..\Runtime$(SolutionDir)\Sync\SyncFile.cmd $(TargetFileName)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -102,6 +99,7 @@
     <ClCompile Include="LigandStick.cpp" />
     <ClCompile Include="LigandSticks.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="ObjModel.cpp" />
     <ClCompile Include="PDBFileDemo.cpp" />
@@ -121,6 +119,7 @@
     <ClInclude Include="DemoCaveWeek2.h" />
     <ClInclude Include="LigandStick.h" />
     <ClInclude Include="LigandSticks.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="ObjModel.h" />
     <ClInclude Include="PDBFileDemo.h" />
