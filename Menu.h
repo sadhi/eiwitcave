@@ -48,6 +48,8 @@ public:
 	bool Mode3DSelectie;
 	bool ModeSelectSingelAtom;
 	bool ModeDistanceMeasure;
+	bool ModeAtomInfo;
+	bool ModeMeasureDistance;
 
 private:
 	//init functions
