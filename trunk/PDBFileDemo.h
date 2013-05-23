@@ -2,11 +2,17 @@
 
 #include <VrLib/Application.h>
 #include <VrLib/Device.h>
+#include "Atom.h"
 
 #include <CaveLib/Plane.h>
+#include <cavelib/Components/Panel.h>
+#include <cavelib/Components/Label.h>
+#include "MainMenu.h"
 
 class PDBFileDemo : public Application
 {
+	
+	MainMenu *menuPanel;
 public:
 	PDBFileDemo(int argc, char* argv[]);
 	~PDBFileDemo(void);
@@ -36,9 +42,18 @@ private:
     DigitalDevice   mButton0;
 	DigitalDevice   mButton1;
 
+	DigitalDevice   mKeyPageUp;
+    DigitalDevice   mKeyPageDown;
+    DigitalDevice   mKeyF5;
+
 	float xSize;
 	float ySize;
 	float zSize;
+
+	Panel* rootPanel;
+	glm::mat4 renderMatrix;
+	cAtom atom1, atom2;
+	BOOL atom1selected;
 
 };
 
