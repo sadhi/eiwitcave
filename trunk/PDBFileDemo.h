@@ -8,11 +8,13 @@
 #include <cavelib/Components/Panel.h>
 #include <cavelib/Components/Label.h>
 #include "MainMenu.h"
+#include "AtomPanel.h"
 
 class PDBFileDemo : public Application
 {
 	
 	MainMenu *menuPanel;
+	AtomPanel *atomPanel;
 public:
 	PDBFileDemo(int argc, char* argv[]);
 	~PDBFileDemo(void);
