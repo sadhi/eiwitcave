@@ -19,6 +19,7 @@
 #include "Texture.h"
 #include "cubemap.h"
 #include "Defines.h"
+#include "AtomPanel.h"
 
 int rotationX = 0;
 int rotationY = 0;
@@ -163,6 +164,7 @@ void PDBFileDemo::contextInit()
 	glShadeModel(GL_SMOOTH);
 	
 	menuPanel = new MainMenu();
+	atomPanel = new AtomPanel();
 }
 
 glm::vec4 PDBFileDemo::collisionLinePlane(glm::vec3 A, glm::vec3 B, Plane plane)
@@ -636,13 +638,13 @@ void PDBFileDemo::MediumDraw(void)
 		while(i < processFile->Atoms.size() );
 		//yea   
 		glColor3f(1.0,1.0,1.0);
-
+		Plane plane(glm::vec3(0,0,-1), 1.3f);
 //		glPushMatrix();
 		glm::vec4 ret = collisionLinePlane(
 		glm::vec3(wandPos[0], wandPos[1], wandPos[2]),
 		glm::vec3(wandForw[0], wandForw[1], wandForw[2]),
 		plane);
-		Plane plane(glm::vec3(0,0,-1), 1.3f);
+		
 
 		glTranslatef(positioningX, positioningY, positioningZ);
 		drawSphere(0.1,(wandForw[0]), (wandForw[1]), (wandForw[2]));
@@ -662,7 +664,7 @@ void PDBFileDemo::MediumDraw(void)
 //	glm::mat4 headMat = mHead.getData();
 //	glm::vec4 headPos = headMat * glm::vec4(0,0,0,1);
 
-	drawBlinkSphere(0.15, processFile->Atoms.at(selectedAtom)->location->X/10.0f,processFile->Atoms.at(selectedAtom)->location->Y/10.0f,processFile->Atoms.at(selectedAtom)->location->Z/10.0f);
+	drawBlinkSphere(0.15, processFile->Atoms.at(selectedAtom)->location->X/10.0f,processFile->Atoms.at(selectedAtom)->location->Y/10.0f,(processFile->Atoms.at(selectedAtom)->location->Z + menuPanel->zoomS->value)/10.0f);
 	 //drawSphere(0.15, processFile->Atoms.at(i)->location->X/10.0f,processFile->Atoms.at(i)->location->Y/10.0f,processFile->Atoms.at(i)->location->Z/10.0f);
 
 		glDisable(GL_BLEND);
@@ -797,13 +799,13 @@ void PDBFileDemo::MediumDraw(void)
 			//TODO Trimming spaces
 			glTranslatef(((processFile->HETAtoms.at(i)->location->X/10.0f) - positioningX), 
 				((processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY), 
-				((processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ));
+				((processFile->HETAtoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ);
 
 			sphereModelMedium->draw();
 
 			glTranslatef(-1.0f * ((processFile->HETAtoms.at(i)->location->X/10.0f - positioningX)), 
 				(-1.0f * ((processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY)), 
-				(-1.0f * ((processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ)));	
+				(-1.0f * ((processFile->HETAtoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ));	
 			i++;
 		}
 		while(i < processFile->HETAtoms.size());
@@ -894,13 +896,13 @@ void PDBFileDemo::LowDraw(void)
 
 			glTranslatef(processFile->Atoms.at(i)->location->X/10.0f - positioningX, 
 				(processFile->Atoms.at(i)->location->Y/10.0f) - positioningY, 
-				(processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ);
+				((processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ);
 
 			sphereModelLow->draw();
 
 			glTranslatef(-1.0f * (processFile->Atoms.at(i)->location->X/10.0f - positioningX), 
 				-1.0f * ((processFile->Atoms.at(i)->location->Y/10.0f) - positioningY), 
-				-1.0f * ((processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ));	
+				-1.0f * (((processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ));	
 			i++;
 		}
 		while (i < processFile->Atoms.size());
@@ -1005,13 +1007,13 @@ void PDBFileDemo::LowDraw(void)
 			//TODO Trimming spaces
 			glTranslatef(processFile->HETAtoms.at(i)->location->X/10.0f - positioningX, 
 				(processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY, 
-				(processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ);
+				((processFile->HETAtoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ);
 
 			sphereModelLow->draw();
 
 			glTranslatef(-1.0f * (processFile->HETAtoms.at(i)->location->X/10.0f - positioningX), 
 				-1.0f * ((processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY), 
-				-1.0f * ((processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ));	
+				-1.0f * (((processFile->HETAtoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ));	
 			i++;
 		}// end i for loop
 		while( i < processFile->HETAtoms.size());
@@ -1102,13 +1104,13 @@ void PDBFileDemo::HighDraw(void)
 
 			glTranslatef(processFile->Atoms.at(i)->location->X/10.0f - positioningX, 
 				(processFile->Atoms.at(i)->location->Y/10.0f) - positioningY, 
-				(processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ);
+				((processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ);
 
 			sphereModelHigh->draw();
 
 			glTranslatef(-1.0f * (processFile->Atoms.at(i)->location->X/10.0f - positioningX), 
 				-1.0f * ((processFile->Atoms.at(i)->location->Y/10.0f) - positioningY), 
-				-1.0f * ((processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ));	
+				-1.0f * (((processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ));	
 			i++;
 		}
 		while (i < processFile->Atoms.size());
@@ -1209,13 +1211,13 @@ void PDBFileDemo::HighDraw(void)
 			//TODO Trimming spaces
 			glTranslatef(processFile->HETAtoms.at(i)->location->X/10.0f - positioningX, 
 				(processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY, 
-				(processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ);
+				((processFile->HETAtoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ);
 
 			sphereModelHigh->draw();
 
 			glTranslatef(-1.0f * (processFile->HETAtoms.at(i)->location->X/10.0f - positioningX), 
 				-1.0f * ((processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY), 
-				-1.0f * ((processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ));	
+				-1.0f * (((processFile->HETAtoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ));	
 			i++;
 		}// end i for loop
 		while (i < processFile->HETAtoms.size());
@@ -1288,15 +1290,15 @@ float PDBFileDemo::GetDisctanceBetweenAtoms(int Atom1, int Atom2)
 {
 			float DeltaX=pow(abs(processFile->Atoms.at(Atom1)->location->X/10.0f-processFile->Atoms.at(Atom2)->location->X/10.0f),2);
 				float DeltaY=pow(abs(processFile->Atoms.at(Atom1)->location->Y/10.0f-processFile->Atoms.at(Atom2)->location->Y/10.0f),2);
-				float DeltaZ=pow(abs(processFile->Atoms.at(Atom1)->location->Z/10.0f-processFile->Atoms.at(Atom2)->location->Z/10.0f),2);
+				float DeltaZ=pow(abs((processFile->Atoms.at(Atom1)->location->Z + menuPanel->zoomS->value)/10.0f-(processFile->Atoms.at(Atom2)->location->Z + menuPanel->zoomS->value)/10.0f),2);
 				float Distance =sqrtf(DeltaX+DeltaY+DeltaZ);
 			//	std::cout << "X1: " << processFile->Atoms.at(Atom1)->location->X << " Y1: " << processFile->Atoms.at(Atom1)->location->Y << " Z1: " <<  processFile->Atoms.at(Atom1)->location->Z << std::endl;
 			//	std::cout << "X2: " << processFile->Atoms.at(Atom2)->location->X << " Y2: " << processFile->Atoms.at(Atom2)->location->Y << " Z2: " <<  processFile->Atoms.at(Atom2)->location->Z << std::endl;
 			//	std::cout << "Distance: " << Distance*10 << std::endl;
 
 				glColor4f(0.0f,1.0f,0.0f,1.0f);
-		drawBlinkSphere(0.06, processFile->Atoms.at(Atom1)->location->X/10.0f, processFile->Atoms.at(Atom1)->location->Y/10.0f, processFile->Atoms.at(Atom1)->location->Z/10.0f);
-		drawBlinkSphere(0.06, processFile->Atoms.at(Atom2)->location->X/10.0f, processFile->Atoms.at(Atom2)->location->Y/10.0f, processFile->Atoms.at(Atom2)->location->Z/10.0f);
+		drawBlinkSphere(0.06, processFile->Atoms.at(Atom1)->location->X/10.0f, processFile->Atoms.at(Atom1)->location->Y/10.0f, (processFile->Atoms.at(Atom1)->location->Z + menuPanel->zoomS->value)/10.0f);
+		drawBlinkSphere(0.06, processFile->Atoms.at(Atom2)->location->X/10.0f, processFile->Atoms.at(Atom2)->location->Y/10.0f, (processFile->Atoms.at(Atom2)->location->Z + menuPanel->zoomS->value)/10.0f);
 
 				glTranslatef(processFile->Atoms.at(Atom1)->location->X/10.0f - positioningX, 
 				(processFile->Atoms.at(Atom1)->location->Y/10.0f) - positioningY, 
@@ -1310,7 +1312,7 @@ float PDBFileDemo::GetDisctanceBetweenAtoms(int Atom1, int Atom2)
 
 			glTranslatef(-1.0f * (processFile->Atoms.at(Atom1)->location->X/10.0f - positioningX), 
 				-1.0f * ((processFile->Atoms.at(Atom1)->location->Y/10.0f) - positioningY), 
-				-1.0f * ((processFile->Atoms.at(Atom1)->location->Z/10.0f) - positioningZ));
+				-1.0f * (((processFile->Atoms.at(Atom1)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ));
 
 		return Distance*10;
 }
@@ -1340,6 +1342,8 @@ void PDBFileDemo::draw(glm::mat4 projectionMatrix)
 	updateLightPosition(headPos[0],headPos[1],headPos[2]);
 
 	menuPanel->draw();
+	if(menuPanel->ModeAtomInfo)
+		atomPanel->draw();
 
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
