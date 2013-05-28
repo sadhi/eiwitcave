@@ -49,10 +49,16 @@ float positioningZ = 0.0f;
 glm::vec4 wandForw;
 glm::vec4 wandPos;
 
-float sphereSize=1.0;
-float selectedAtom=0;
+//tijdelijk
+float AtomClosestToWand =0;
+// float WandToClostAtomD=10000000;
 
-float DistanceAtom1=34, DistanceAtom2=3;
+float sphereSize=1.0;
+
+float selectedAtom=0;
+float DistanceAtom1=0, DistanceAtom2=34;
+float OrbSelect=34;
+//float OrbSelectX=0, OrbSelectY=0, OrbSelectZ=0; 
 
 PDBFileDemo::PDBFileDemo(int argc, char* argv[])
 {
@@ -126,7 +132,7 @@ void PDBFileDemo::contextInit()
 
 	if(fileToLoad.empty())
 	{
-		fileToLoad = "data/proteins/1DW5.pdb"; //3PTA //1DW5f
+		fileToLoad = "data/proteins/cutDNMT1.pdb"; //3PTA //1DW5 //CutDNMT1
 		cout << "Error loading file, loading 1DW5.pdb instead:" << fileToLoad << endl;
 	}
 	
@@ -191,6 +197,7 @@ void PDBFileDemo::drawPointer()
 	glBegin(GL_LINES);
 		glVertex3f(wandPos[0], wandPos[1], wandPos[2]);
 		glVertex3f(ret[0], ret[1], ret[2]);
+		//glVertex3f(wandForw[0],wandForw[1],wandForw[2]);
 	glEnd();
 }
 
@@ -277,7 +284,7 @@ void PDBFileDemo::preFrame()
 
 	if(last_idle_time - lastFrameRate > 5000)
 	{
-		std::cout << "FPS: " << frameCount / 5 << std::endl;
+	//	std::cout << "FPS: " << frameCount / 5 << std::endl;
 	//	frameCount = 0;
 		lastFrameRate = last_idle_time;
 	}
@@ -288,7 +295,7 @@ void PDBFileDemo::preFrame()
 
 	glm::mat4 headMat = mHead.getData();
 	glm::vec4 headPos = headMat * glm::vec4(0,0,0,1);
-	
+
 	//Main menu actions
 	if(menuPanel)
 	{
@@ -316,47 +323,46 @@ void PDBFileDemo::preFrame()
 		}
 	}
 
-	//if(mButton0.getData() == TOGGLE_ON && headPos[2] > 1.3)// && tickCount == 0)
-	//{
-	//	processFile->Menu->AutoSetMode();
-	//}
-	//else if(processFile != NULL && processFile->Menu->ModeRotation && mButton0.getData() == ON)
-	//{
-	//	glm::vec3 gmtlVecA = glm::vec3(wandPos[0], wandPos[1], wandPos[2]);
-	//	glm::vec3 gmtlVecB = glm::vec3(wandForw[0], wandForw[1], wandForw[2]);
-	//	glm::vec3 vec = glm::vec3(0.0,1.0,0.0);
-	//	glm::vec3 diff = gmtlVecB - gmtlVecA;
-	//	diff[0] = -diff[0];
-	//	diff[2] = -diff[2];
+	if(mButton0.getData() == TOGGLE_ON && headPos[2] > 1.3)// && tickCount == 0)
+	{
+		processFile->Menu->AutoSetMode();
+	}
+	else if(processFile != NULL && processFile->Menu->ModeRotation && mButton0.getData() == ON)
+	{
+		glm::vec3 gmtlVecA = glm::vec3(wandPos[0], wandPos[1], wandPos[2]);
+		glm::vec3 gmtlVecB = glm::vec3(wandForw[0], wandForw[1], wandForw[2]);
+		glm::vec3 vec = glm::vec3(0.0,1.0,0.0);
+		glm::vec3 diff = gmtlVecB - gmtlVecA;
+		diff[0] = -diff[0];
+		diff[2] = -diff[2];
 
-	//	float xAbs = glm::abs(diff[1]);
-	//	float yAbs = glm::abs(diff[0]);
-	//	float zAbs = glm::abs(diff[2]);
+		float xAbs = glm::abs(diff[1]);
+		float yAbs = glm::abs(diff[0]);
+		float zAbs = glm::abs(diff[2]);
 
-	//	if(xAbs > yAbs && xAbs > zAbs)
-	//	{//X
-	//		if(diff[1] > 0)
-	//			rotationX = (rotationX + 3)%360;
-	//		else if(diff[1] < 0)
-	//			rotationX = (rotationX - 3)%360;
-	//	}
-	//	else if(yAbs > xAbs && yAbs > zAbs)
-	//	{//Y
-	//		if(diff[0] > 0)
-	//			rotationY = (rotationY + 3)%360;
-	//		else if(diff[0] < 0)
-	//			rotationY = (rotationY - 3)%360;
-	//	}
-	//	else if(zAbs > yAbs && zAbs > xAbs)
-	//	{//Z
-	//		if(diff[2] > 0)
-	//			rotationZ = (rotationZ + 3)%360;
-	//		else if(diff[2] < 0)
-	//			rotationZ = (rotationZ - 3)%360;
-	//	}
-	//}
-	//else 
-	if(processFile != NULL && processFile->Menu->ModeTranslation && mButton0.getData() == ON)
+		if(xAbs > yAbs && xAbs > zAbs)
+		{//X
+			if(diff[1] > 0)
+				rotationX = (rotationX + 3)%360;
+			else if(diff[1] < 0)
+				rotationX = (rotationX - 3)%360;
+		}
+		else if(yAbs > xAbs && yAbs > zAbs)
+		{//Y
+			if(diff[0] > 0)
+				rotationY = (rotationY + 3)%360;
+			else if(diff[0] < 0)
+				rotationY = (rotationY - 3)%360;
+		}
+		else if(zAbs > yAbs && zAbs > xAbs)
+		{//Z
+			if(diff[2] > 0)
+				rotationZ = (rotationZ + 3)%360;
+			else if(diff[2] < 0)
+				rotationZ = (rotationZ - 3)%360;
+		}
+	}
+	else if(processFile != NULL && processFile->Menu->ModeTranslation && mButton0.getData() == ON)
 	{
 		glm::vec3 gmtlVecA = glm::vec3(wandPos[0], wandPos[1], wandPos[2]);
 		glm::vec3 gmtlVecB = glm::vec3(wandForw[0], wandForw[1], wandForw[2]);
@@ -475,22 +481,24 @@ void PDBFileDemo::updateLightPosition(float x, float y, float z)
 
 void PDBFileDemo::MediumDraw(void)
 {
+	DistanceAtom2=selectedAtom;
 
-	glDisable(GL_DEPTH_TEST);
 	if(processFile->Menu->Mode3DSelectie){
+	glDisable(GL_DEPTH_TEST);	
 	glColor4f(0.0f,0.3f,0.7f,0.1f);
 
 	glm::mat4 headMat = mHead.getData();
 	glm::vec4 headPos = headMat * glm::vec4(0,0,0,1);
 
-	 drawSphere(1.0, headPos[0],headPos[1],headPos[2]);
+	 drawSphere(1.0, processFile->Atoms.at(OrbSelect)->location->X/10,processFile->Atoms.at(OrbSelect)->location->Y/10,processFile->Atoms.at(OrbSelect)->location->Z/10);
 	}
-
 	glEnable(GL_DEPTH_TEST);
 
 	if(processFile->Menu->ModeDistanceMeasure){
 	GetDisctanceBetweenAtoms(DistanceAtom1,DistanceAtom2);
 	}
+
+	float WandToClostAtomD=-1;
 
 	if(processFile->Menu->ModeProtein)
 	{
@@ -533,10 +541,12 @@ void PDBFileDemo::MediumDraw(void)
 				{
 					if(!processFile->Menu->ModeHAtoms)
 					{
+					processFile->Atoms.at(i)->draw=false;
 					i++;
 					continue;
 					}
 					glColor4f(1.0f, 1.0f, 1.0f, 1.0f); //Wit
+					processFile->Atoms.at(i)->draw=true;
 
 				}
 				else
@@ -572,7 +582,76 @@ void PDBFileDemo::MediumDraw(void)
 					break;
 				}
 			}
-			if(processFile->Menu->ModeSelectSingelAtom && i==selectedAtom){
+			
+			float DistanceFromAtoomToHead=0;
+			if(processFile->Menu->Mode3DSelectie){
+				float DeltaX=pow(abs(processFile->Atoms.at(i)->location->X/10.0f-processFile->Atoms.at(OrbSelect)->location->X/10),2);
+				float DeltaY=pow(abs(processFile->Atoms.at(i)->location->Y/10.0f-processFile->Atoms.at(OrbSelect)->location->Y/10),2);
+				float DeltaZ=pow(abs(processFile->Atoms.at(i)->location->Z/10.0f-processFile->Atoms.at(OrbSelect)->location->Z/10),2);
+				DistanceFromAtoomToHead=sqrtf(DeltaX+DeltaY+DeltaZ);
+			}
+				if(DistanceFromAtoomToHead<sphereSize){
+					processFile->Atoms.at(i)->draw=true;
+			//TODO Trimming spaces
+					
+			glTranslatef((processFile->Atoms.at(i)->location->X/10.0f - positioningX), 
+				((processFile->Atoms.at(i)->location->Y/10.0f) - positioningY), 
+				((processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ));
+
+			sphereModelMedium->draw();
+
+			glTranslatef((-1.0f * (processFile->Atoms.at(i)->location->X/10.0f - positioningX)), 
+				(-1.0f * ((processFile->Atoms.at(i)->location->Y/10.0f) - positioningY)), 
+				(-1.0f * ((processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ)));	
+				}else{
+					processFile->Atoms.at(i)->draw=false;
+				}
+
+				//tijdelijk
+				//	glm::mat4 wandMatrix = mWand.getData();
+
+				float DeltaX=pow(abs((processFile->Atoms.at(i)->location->X/10.0f)-(wandPos[0]+positioningX)),2);
+				float DeltaY=pow(abs((processFile->Atoms.at(i)->location->Y/10.0f)-(wandPos[1]+positioningY)),2);
+				float DeltaZ=pow(abs((processFile->Atoms.at(i)->location->Z/10.0f)-(wandPos[2]+positioningZ)),2);
+				DistanceFromAtoomToHead=sqrtf(DeltaX+DeltaY+DeltaZ);
+
+				if(WandToClostAtomD<0){
+				WandToClostAtomD=DistanceFromAtoomToHead;
+				}
+
+				drawSphere(0.1,wandPos[0]+positioningX,wandPos[1]+positioningY,wandPos[2]+positioningZ);
+				if(DistanceFromAtoomToHead<WandToClostAtomD && processFile->Atoms.at(i)->draw){
+					AtomClosestToWand=i;
+					selectedAtom=i;
+					WandToClostAtomD=DistanceFromAtoomToHead;
+
+					glm::vec3 gmtlCor = glm::vec3(wandPos[0], wandPos[1], wandPos[2]);
+					glm::vec3 gmtlVec = glm::vec3(wandForw[0], wandForw[1], wandForw[2]);
+		
+					
+				}
+			
+			i++;
+		}
+		while(i < processFile->Atoms.size() );
+		//yea   
+		glColor3f(1.0,1.0,1.0);
+
+//		glPushMatrix();
+		glm::vec4 ret = collisionLinePlane(
+		glm::vec3(wandPos[0], wandPos[1], wandPos[2]),
+		glm::vec3(wandForw[0], wandForw[1], wandForw[2]),
+		plane);
+		Plane plane(glm::vec3(0,0,-1), 1.3f);
+
+		glTranslatef(positioningX, positioningY, positioningZ);
+		drawSphere(0.1,(wandForw[0]), (wandForw[1]), (wandForw[2]));
+		glTranslatef(-positioningX, -positioningY, -positioningZ);
+//		glPopMatrix();
+			std::cout << "wandPos[0]: " << wandPos[0] << " wandPos[1]: " << wandPos[1] << " wandPos[2]: " << wandPos[2] << std::endl;
+			std::cout << "wandForw[0]: " << wandForw[0] << " wandForw[1]: " << wandForw[1] << " wandForw[2]: " << wandForw[2] << std::endl;
+			
+					if(processFile->Menu->ModeSelectSingelAtom ){
 				
 				glPushAttrib(GL_CURRENT_BIT);
 				glDisable(GL_DEPTH_TEST);
@@ -580,43 +659,17 @@ void PDBFileDemo::MediumDraw(void)
 				glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //Set the blend function
 				glColor4f(1.0f,1.0f,0.2f,0.5f);
 
-	glm::mat4 headMat = mHead.getData();
-	glm::vec4 headPos = headMat * glm::vec4(0,0,0,1);
+//	glm::mat4 headMat = mHead.getData();
+//	glm::vec4 headPos = headMat * glm::vec4(0,0,0,1);
 
-	drawBlinkSphere(0.15, processFile->Atoms.at(i)->location->X/10.0f,processFile->Atoms.at(i)->location->Y/10.0f,processFile->Atoms.at(i)->location->Z/10.0f);
+	drawBlinkSphere(0.15, processFile->Atoms.at(selectedAtom)->location->X/10.0f,processFile->Atoms.at(selectedAtom)->location->Y/10.0f,processFile->Atoms.at(selectedAtom)->location->Z/10.0f);
 	 //drawSphere(0.15, processFile->Atoms.at(i)->location->X/10.0f,processFile->Atoms.at(i)->location->Y/10.0f,processFile->Atoms.at(i)->location->Z/10.0f);
-	 
+
 		glDisable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);	
 		glPopAttrib();
 			}
 
-			float DistanceFromAtoomToHead=0;
-			if(processFile->Menu->Mode3DSelectie){
-					glm::mat4 headMat = mHead.getData();
-					glm::vec4 headPos = headMat * glm::vec4(0,0,0,1);
-				float DeltaX=pow(abs(processFile->Atoms.at(i)->location->X/10.0f-headPos[0]),2);
-				float DeltaY=pow(abs(processFile->Atoms.at(i)->location->Y/10.0f-headPos[1]),2);
-				float DeltaZ=pow(abs(processFile->Atoms.at(i)->location->Z/10.0f-headPos[2]),2);
-				DistanceFromAtoomToHead=sqrtf(DeltaX+DeltaY+DeltaZ);
-			}
-				if(DistanceFromAtoomToHead<sphereSize){
-
-			//TODO Trimming spaces
-			glTranslatef(processFile->Atoms.at(i)->location->X/10.0f - positioningX, 
-				(processFile->Atoms.at(i)->location->Y/10.0f) - positioningY, 
-				(processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ);
-
-			sphereModelMedium->draw();
-
-			glTranslatef(-1.0f * (processFile->Atoms.at(i)->location->X/10.0f - positioningX), 
-				-1.0f * ((processFile->Atoms.at(i)->location->Y/10.0f) - positioningY), 
-				-1.0f * ((processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ));	
-				}
-			i++;
-		}
-		while(i < processFile->Atoms.size() );
-		
 		//float test = processFile->Sticks->sticks[1][0]->X;
 		glTranslatef(-positioningX, -positioningY, -positioningZ);
 
@@ -625,15 +678,15 @@ void PDBFileDemo::MediumDraw(void)
 		{
 					float DistanceFromStickToHead=0;
 			if(processFile->Menu->Mode3DSelectie){
-					glm::mat4 headMat = mHead.getData();
-					glm::vec4 headPos = headMat * glm::vec4(0,0,0,1);
-				float DeltaX=pow(abs(processFile->Sticks->sticks[i][0]->X/10.0f-headPos[0]),2);
-				float DeltaY=pow(abs(processFile->Sticks->sticks[i][0]->Y/10.0f-headPos[1]),2);
-				float DeltaZ=pow(abs(processFile->Sticks->sticks[i][0]->Z/10.0f-headPos[2]),2);
+			//		glm::mat4 headMat = mHead.getData();
+			//		glm::vec4 headPos = headMat * glm::vec4(0,0,0,1);
+				float DeltaX=pow(abs(processFile->Sticks->sticks[i][0]->X/10.0f-processFile->Atoms.at(OrbSelect)->location->X/10),2);
+				float DeltaY=pow(abs(processFile->Sticks->sticks[i][0]->Y/10.0f-processFile->Atoms.at(OrbSelect)->location->Y/10),2);
+				float DeltaZ=pow(abs(processFile->Sticks->sticks[i][0]->Z/10.0f-processFile->Atoms.at(OrbSelect)->location->Z/10),2);
 				DistanceFromStickToHead=sqrtf(DeltaX+DeltaY+DeltaZ);
-				DeltaX=pow(abs(processFile->Sticks->sticks[i][1]->X/10.0f-headPos[0]),2);
-				DeltaY=pow(abs(processFile->Sticks->sticks[i][1]->Y/10.0f-headPos[1]),2);
-				DeltaZ=pow(abs(processFile->Sticks->sticks[i][1]->Z/10.0f-headPos[2]),2);
+				DeltaX=pow(abs(processFile->Sticks->sticks[i][1]->X/10.0f-processFile->Atoms.at(OrbSelect)->location->X/10),2);
+				DeltaY=pow(abs(processFile->Sticks->sticks[i][1]->Y/10.0f-processFile->Atoms.at(OrbSelect)->location->Y/10),2);
+				DeltaZ=pow(abs(processFile->Sticks->sticks[i][1]->Z/10.0f-processFile->Atoms.at(OrbSelect)->location->Z/10),2);
 				float DistanceFromStickToHead2=sqrtf(DeltaX+DeltaY+DeltaZ);
 				if(DistanceFromStickToHead2>DistanceFromStickToHead)
 				{DistanceFromStickToHead=DistanceFromStickToHead2;}
@@ -742,15 +795,15 @@ void PDBFileDemo::MediumDraw(void)
 			}
 
 			//TODO Trimming spaces
-			glTranslatef(processFile->HETAtoms.at(i)->location->X/10.0f - positioningX, 
-				(processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY, 
-				(processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ);
+			glTranslatef(((processFile->HETAtoms.at(i)->location->X/10.0f) - positioningX), 
+				((processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY), 
+				((processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ));
 
 			sphereModelMedium->draw();
 
-			glTranslatef(-1.0f * (processFile->HETAtoms.at(i)->location->X/10.0f - positioningX), 
-				-1.0f * ((processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY), 
-				-1.0f * ((processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ));	
+			glTranslatef(-1.0f * ((processFile->HETAtoms.at(i)->location->X/10.0f - positioningX)), 
+				(-1.0f * ((processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY)), 
+				(-1.0f * ((processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ)));	
 			i++;
 		}
 		while(i < processFile->HETAtoms.size());
@@ -1239,7 +1292,7 @@ float PDBFileDemo::GetDisctanceBetweenAtoms(int Atom1, int Atom2)
 				float Distance =sqrtf(DeltaX+DeltaY+DeltaZ);
 			//	std::cout << "X1: " << processFile->Atoms.at(Atom1)->location->X << " Y1: " << processFile->Atoms.at(Atom1)->location->Y << " Z1: " <<  processFile->Atoms.at(Atom1)->location->Z << std::endl;
 			//	std::cout << "X2: " << processFile->Atoms.at(Atom2)->location->X << " Y2: " << processFile->Atoms.at(Atom2)->location->Y << " Z2: " <<  processFile->Atoms.at(Atom2)->location->Z << std::endl;
-				std::cout << "Distance: " << Distance*10 << std::endl;
+			//	std::cout << "Distance: " << Distance*10 << std::endl;
 
 				glColor4f(0.0f,1.0f,0.0f,1.0f);
 		drawBlinkSphere(0.06, processFile->Atoms.at(Atom1)->location->X/10.0f, processFile->Atoms.at(Atom1)->location->Y/10.0f, processFile->Atoms.at(Atom1)->location->Z/10.0f);
@@ -1259,10 +1312,18 @@ float PDBFileDemo::GetDisctanceBetweenAtoms(int Atom1, int Atom2)
 				-1.0f * ((processFile->Atoms.at(Atom1)->location->Y/10.0f) - positioningY), 
 				-1.0f * ((processFile->Atoms.at(Atom1)->location->Z/10.0f) - positioningZ));
 
-	
-
 		return Distance*10;
 }
+
+float PDBFileDemo::get3DDistance(float X1, float Y1, float Z1, float X2, float Y2, float Z2)
+{
+				float DeltaX=pow(abs(X1-X2),2);
+				float DeltaY=pow(abs(Y1-Y2),2);
+				float DeltaZ=pow(abs(Z1-Z2),2);
+				return sqrtf(DeltaX+DeltaY+DeltaZ);
+}
+
+	
 
 void PDBFileDemo::draw(glm::mat4 projectionMatrix)
 {

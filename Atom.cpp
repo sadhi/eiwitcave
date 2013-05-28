@@ -3,7 +3,6 @@
 #include <string>
 #include <stdio.h>
 
-
 cAtom::cAtom(void)
 {
 }
@@ -47,5 +46,7 @@ void cAtom::init(string* line)
 
 	string chargeStr = line->substr(78,2);
 	sscanf_s(chargeStr.c_str(), "%d", &charge);
+
+	draw=true;
 }
 
