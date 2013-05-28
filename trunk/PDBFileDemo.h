@@ -35,6 +35,7 @@ public:
 	float GetDisctanceBetweenAtoms(int Atom1, int Atom2);
 	void drawSphere(float size, float X, float Y, float Z);
 	void drawBlinkSphere(float size, float X, float Y, float Z);
+	float get3DDistance(float X1, float Y1, float Z1, float X2, float Y2, float Z2);
 private:
 	//int tickCount;
 	PositionalDevice  mWand;

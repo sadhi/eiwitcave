@@ -3,7 +3,6 @@
 #include <algorithm>
 #include "ProcessFile.h"
 
-
 bool firstModel = true;
 
 cProcessFile::cProcessFile(void)

@@ -26,6 +26,7 @@ public:
 	int charge;
 
 	bool isPartOfLigand;
+	bool draw;
 
 private:
 	//functions
