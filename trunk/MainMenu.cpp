@@ -3,93 +3,11 @@
 #include <cavelib/LayoutManagers/FlowLayout.h>
 #include <cavelib/Components/Panel.h>
 #include <cavelib/Components/Label.h>
+#include <CaveLib/Components/Button.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-class RotateButton : public Button
-	{
-		MainMenu *mm;
-
-	public:
-		RotateButton(MainMenu *menu) : Button("Rotate")
-		{
-			this->mm = menu;
-		}
-
-		void click()
-		{
-			mm->ModeAtomInfo = false;
-			mm->ModeMeasureDistance = false;
-			mm->rotateL->setVisibility(true);
-			mm->rotateS->setVisibility(true);
-			mm->zoomL->setVisibility(false);
-			mm->zoomS->setVisibility(false);
-		}
-	};
-
-class ZoomButton : public Button
-	{
-		MainMenu *mm;
-
-	public:
-		ZoomButton(MainMenu *menu) : Button("Zoom")
-		{
-			this->mm = menu;
-		}
-
-		void click()
-		{
-			mm->ModeAtomInfo = false;
-			mm->ModeMeasureDistance = false;
-			mm->rotateL->setVisibility(false);
-			mm->rotateS->setVisibility(false);
-			mm->zoomL->setVisibility(true);
-			mm->zoomS->setVisibility(true);
-		}
-	};
-
-class MeasureButton : public Button
-	{
-		MainMenu *mm;
-
-	public:
-		MeasureButton(MainMenu *menu) : Button("Distance")
-		{
-			this->mm = menu;
-		}
-
-		void click()
-		{
-			mm->ModeAtomInfo = false;
-			mm->ModeMeasureDistance = true;
-			mm->rotateL->setVisibility(false);
-			mm->rotateS->setVisibility(false);
-			mm->zoomL->setVisibility(false);
-			mm->zoomS->setVisibility(false);
-		}
-	};
-
-class AtomButton : public Button
-	{
-		MainMenu *mm;
-
-	public:
-		AtomButton(MainMenu *menu) : Button("Atom info")
-		{
-			this->mm = menu;
-		}
-
-		void click()
-		{
-			mm->ModeAtomInfo = true;
-			mm->ModeMeasureDistance = false;
-			mm->rotateL->setVisibility(false);
-			mm->rotateS->setVisibility(false);
-			mm->zoomL->setVisibility(false);
-			mm->zoomS->setVisibility(false);
-		}
-	};
 
 MainMenu::MainMenu(void) : GUIPanel("")
 {
@@ -105,30 +23,90 @@ MainMenu::MainMenu(void) : GUIPanel("")
 	p->add(new Label("View"));
 
 	//first line of 3 buttons
-	p->add(moveButton = new Button("Move"));
-	p->add(new AtomButton(this));
-	p->add(new ZoomButton(this));
+	p->add(moveButton = new Button("Move", fastdelegate::MakeDelegate(this, &MainMenu::setMoveMode)));
+	p->add(new Button("Atom info", fastdelegate::MakeDelegate(this, &MainMenu::setAtomMode)));
+	p->add(new Button("Zoom", fastdelegate::MakeDelegate(this, &MainMenu::setZoomMode)));
 	//second line of 3 buttons
-	p->add(new RotateButton(this));
-	p->add(new MeasureButton(this));
-	p->add(centrateButton = new Button("Centrate"));
+	p->add(new Button("Rotate", fastdelegate::MakeDelegate(this, &MainMenu::setRotationMode)));
+	p->add(new Button("Distance", fastdelegate::MakeDelegate(this, &MainMenu::setMeasureMode)));
+	p->add(centrateButton = new Button("Centrate", fastdelegate::MakeDelegate(this, &MainMenu::centrate)));
 
 	//extraPanel has items that extend function of the button
 	//for example the button zoom causes a slider to appear for zooming in and out
 	extraPanel->add(rotateL = new VisibilityLabel("Rotation: ",false));
 	extraPanel->add(rotateS = new VisibilitySlider(0,360,0,false));
 	extraPanel->add(zoomL = new VisibilityLabel("Zoom: ",false));
-	extraPanel->add(zoomS = new VisibilitySlider(0,1000,0,false));
+	extraPanel->add(zoomS = new VisibilitySlider(0,40,0,false));
 
 	rootPanel->setFont(font);
 	rootPanel->reposition(0,0,0.8f,1.5f);
 
 	renderMatrix = glm::mat4();
-	renderMatrix = glm::translate(renderMatrix, glm::vec3(-1.5,-0.6f,-0));
+	renderMatrix = glm::translate(renderMatrix, glm::vec3(-1.5,-1,-0));
 	renderMatrix = glm::rotate(renderMatrix, 90.0f, glm::vec3(0,1,0));
 }
 
 
 MainMenu::~MainMenu(void)
 {
+}
+
+void MainMenu::setRotationMode()
+{
+	ModeAtomInfo = false;
+	ModeMeasureDistance = false;
+	rotateL->setVisibility(true);
+	rotateS->setVisibility(true);
+	zoomL->setVisibility(false);
+	zoomS->setVisibility(false);
+}
+
+void MainMenu::setZoomMode()
+{
+	ModeAtomInfo = false;
+	ModeMeasureDistance = false;
+	rotateL->setVisibility(false);
+	rotateS->setVisibility(false);
+	zoomL->setVisibility(true);
+	zoomS->setVisibility(true);
+}
+
+void MainMenu::setMeasureMode()
+{
+	ModeAtomInfo = false;
+	ModeMeasureDistance = true;
+	rotateL->setVisibility(false);
+	rotateS->setVisibility(false);
+	zoomL->setVisibility(false);
+	zoomS->setVisibility(false);
+}
+
+void MainMenu::setAtomMode()
+{
+	ModeAtomInfo = true;
+	ModeMeasureDistance = false;
+	rotateL->setVisibility(false);
+	rotateS->setVisibility(false);
+	zoomL->setVisibility(false);
+	zoomS->setVisibility(false);
+}
+
+void MainMenu::setMoveMode()
+{
+	ModeAtomInfo = false;
+	ModeMeasureDistance = false;
+	rotateL->setVisibility(false);
+	rotateS->setVisibility(false);
+	zoomL->setVisibility(false);
+	zoomS->setVisibility(false);
+}
+
+void MainMenu::centrate()
+{
+	ModeAtomInfo = false;
+	ModeMeasureDistance = false;
+	rotateL->setVisibility(false);
+	rotateS->setVisibility(false);
+	zoomL->setVisibility(false);
+	zoomS->setVisibility(false);
 }

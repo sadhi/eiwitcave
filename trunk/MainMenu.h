@@ -13,6 +13,12 @@ class MainMenu :
 public:
 	MainMenu(void);
 	~MainMenu(void);
+	void setRotationMode();
+	void setZoomMode();
+	void setMeasureMode();
+	void setAtomMode();
+	void setMoveMode();
+	void centrate();
 
 	//buttons
 	Button* moveButton, *centrateButton;

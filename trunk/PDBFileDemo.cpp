@@ -133,7 +133,7 @@ void PDBFileDemo::contextInit()
 
 	if(fileToLoad.empty())
 	{
-		fileToLoad = "data/proteins/cutDNMT1.pdb"; //3PTA //1DW5 //CutDNMT1
+		fileToLoad = "data/proteins/1DW5.pdb"; //3PTA //1DW5 //CutDNMT1
 		cout << "Error loading file, loading 1DW5.pdb instead:" << fileToLoad << endl;
 	}
 	
@@ -165,6 +165,8 @@ void PDBFileDemo::contextInit()
 	
 	menuPanel = new MainMenu();
 	atomPanel = new AtomPanel();
+	enzymePanel = new EnzymePanel(processFile->Atoms.size(), processFile->Atoms);
+	
 }
 
 glm::vec4 PDBFileDemo::collisionLinePlane(glm::vec3 A, glm::vec3 B, Plane plane)
@@ -492,7 +494,7 @@ void PDBFileDemo::MediumDraw(void)
 	glm::mat4 headMat = mHead.getData();
 	glm::vec4 headPos = headMat * glm::vec4(0,0,0,1);
 
-	 drawSphere(1.0, processFile->Atoms.at(OrbSelect)->location->X/10,processFile->Atoms.at(OrbSelect)->location->Y/10,processFile->Atoms.at(OrbSelect)->location->Z/10);
+	 drawSphere(1.0, processFile->Atoms.at(OrbSelect)->location->X/10,processFile->Atoms.at(OrbSelect)->location->Y/10,(processFile->Atoms.at(OrbSelect)->location->Z + menuPanel->zoomS->value)/10);
 	}
 	glEnable(GL_DEPTH_TEST);
 
@@ -589,7 +591,7 @@ void PDBFileDemo::MediumDraw(void)
 			if(processFile->Menu->Mode3DSelectie){
 				float DeltaX=pow(abs(processFile->Atoms.at(i)->location->X/10.0f-processFile->Atoms.at(OrbSelect)->location->X/10),2);
 				float DeltaY=pow(abs(processFile->Atoms.at(i)->location->Y/10.0f-processFile->Atoms.at(OrbSelect)->location->Y/10),2);
-				float DeltaZ=pow(abs(processFile->Atoms.at(i)->location->Z/10.0f-processFile->Atoms.at(OrbSelect)->location->Z/10),2);
+				float DeltaZ=pow(abs((processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f-(processFile->Atoms.at(OrbSelect)->location->Z + menuPanel->zoomS->value)/10),2);
 				DistanceFromAtoomToHead=sqrtf(DeltaX+DeltaY+DeltaZ);
 			}
 				if(DistanceFromAtoomToHead<sphereSize){
@@ -598,13 +600,13 @@ void PDBFileDemo::MediumDraw(void)
 					
 			glTranslatef((processFile->Atoms.at(i)->location->X/10.0f - positioningX), 
 				((processFile->Atoms.at(i)->location->Y/10.0f) - positioningY), 
-				((processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ));
+				(((processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ));
 
 			sphereModelMedium->draw();
 
 			glTranslatef((-1.0f * (processFile->Atoms.at(i)->location->X/10.0f - positioningX)), 
 				(-1.0f * ((processFile->Atoms.at(i)->location->Y/10.0f) - positioningY)), 
-				(-1.0f * ((processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ)));	
+				(-1.0f * (((processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ)));	
 				}else{
 					processFile->Atoms.at(i)->draw=false;
 				}
@@ -614,7 +616,7 @@ void PDBFileDemo::MediumDraw(void)
 
 				float DeltaX=pow(abs((processFile->Atoms.at(i)->location->X/10.0f)-(wandPos[0]+positioningX)),2);
 				float DeltaY=pow(abs((processFile->Atoms.at(i)->location->Y/10.0f)-(wandPos[1]+positioningY)),2);
-				float DeltaZ=pow(abs((processFile->Atoms.at(i)->location->Z/10.0f)-(wandPos[2]+positioningZ)),2);
+				float DeltaZ=pow(abs(((processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f)-(wandPos[2]+positioningZ)),2);
 				DistanceFromAtoomToHead=sqrtf(DeltaX+DeltaY+DeltaZ);
 
 				if(WandToClostAtomD<0){
@@ -684,17 +686,20 @@ void PDBFileDemo::MediumDraw(void)
 			//		glm::vec4 headPos = headMat * glm::vec4(0,0,0,1);
 				float DeltaX=pow(abs(processFile->Sticks->sticks[i][0]->X/10.0f-processFile->Atoms.at(OrbSelect)->location->X/10),2);
 				float DeltaY=pow(abs(processFile->Sticks->sticks[i][0]->Y/10.0f-processFile->Atoms.at(OrbSelect)->location->Y/10),2);
-				float DeltaZ=pow(abs(processFile->Sticks->sticks[i][0]->Z/10.0f-processFile->Atoms.at(OrbSelect)->location->Z/10),2);
+				float DeltaZ=pow(abs(processFile->Sticks->sticks[i][0]->Z/10.0f-(processFile->Atoms.at(OrbSelect)->location->Z + menuPanel->zoomS->value)/10),2);
 				DistanceFromStickToHead=sqrtf(DeltaX+DeltaY+DeltaZ);
 				DeltaX=pow(abs(processFile->Sticks->sticks[i][1]->X/10.0f-processFile->Atoms.at(OrbSelect)->location->X/10),2);
 				DeltaY=pow(abs(processFile->Sticks->sticks[i][1]->Y/10.0f-processFile->Atoms.at(OrbSelect)->location->Y/10),2);
-				DeltaZ=pow(abs(processFile->Sticks->sticks[i][1]->Z/10.0f-processFile->Atoms.at(OrbSelect)->location->Z/10),2);
+				DeltaZ=pow(abs(processFile->Sticks->sticks[i][1]->Z/10.0f-(processFile->Atoms.at(OrbSelect)->location->Z + menuPanel->zoomS->value)/10),2);
 				float DistanceFromStickToHead2=sqrtf(DeltaX+DeltaY+DeltaZ);
 				if(DistanceFromStickToHead2>DistanceFromStickToHead)
 				{DistanceFromStickToHead=DistanceFromStickToHead2;}
 			}
 			if(DistanceFromStickToHead<sphereSize){
+				//yea
+				glTranslatef(0,0, (menuPanel->zoomS->value)/10);
 				processFile->Sticks[0].draw(false, i);
+				glTranslatef(0,0,- (menuPanel->zoomS->value)/10);
 			}
 			i++;}
 		while(i < processFile->Sticks->sticks.size());
@@ -1302,10 +1307,10 @@ float PDBFileDemo::GetDisctanceBetweenAtoms(int Atom1, int Atom2)
 
 				glTranslatef(processFile->Atoms.at(Atom1)->location->X/10.0f - positioningX, 
 				(processFile->Atoms.at(Atom1)->location->Y/10.0f) - positioningY, 
-				(processFile->Atoms.at(Atom1)->location->Z/10.0f) - positioningZ);
+				((processFile->Atoms.at(Atom1)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ);
 
 	glBegin(GL_LINES);
-		  glVertex3f(processFile->Atoms.at(Atom2)->location->X/10.0f-(processFile->Atoms.at(Atom1)->location->X/10.0f), processFile->Atoms.at(Atom2)->location->Y/10.0f-(processFile->Atoms.at(Atom1)->location->Y/10.0f), processFile->Atoms.at(Atom2)->location->Z/10.0f-(processFile->Atoms.at(Atom1)->location->Z/10.0f));
+		  glVertex3f(processFile->Atoms.at(Atom2)->location->X/10.0f-(processFile->Atoms.at(Atom1)->location->X/10.0f), processFile->Atoms.at(Atom2)->location->Y/10.0f-(processFile->Atoms.at(Atom1)->location->Y/10.0f), (processFile->Atoms.at(Atom2)->location->Z + menuPanel->zoomS->value)/10.0f-((processFile->Atoms.at(Atom1)->location->Z + menuPanel->zoomS->value)/10.0f));
 		  glVertex3f(0,0,0);
 		  //processFile->Atoms.at(Atom2)->location->X/10.0f, processFile->Atoms.at(Atom2)->location->Y/10.0f, processFile->Atoms.at(Atom2)->location->Z/10.0f
 		 glEnd();
@@ -1344,7 +1349,8 @@ void PDBFileDemo::draw(glm::mat4 projectionMatrix)
 	menuPanel->draw();
 	if(menuPanel->ModeAtomInfo)
 		atomPanel->draw();
-
+	enzymePanel->draw();
+	
 	glClear(GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
