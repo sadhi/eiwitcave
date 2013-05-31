@@ -9,12 +9,14 @@
 #include <cavelib/Components/Label.h>
 #include "MainMenu.h"
 #include "AtomPanel.h"
+#include "EnzymePanel.h"
 
 class PDBFileDemo : public Application
 {
 	
 	MainMenu *menuPanel;
 	AtomPanel *atomPanel;
+	EnzymePanel *enzymePanel;
 public:
 	PDBFileDemo(int argc, char* argv[]);
 	~PDBFileDemo(void);

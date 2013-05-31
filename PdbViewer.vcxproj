@@ -98,10 +98,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Atom.cpp" />
+    <ClCompile Include="AtomPanel.cpp" />
     <ClCompile Include="cubemap.cpp" />
+    <ClCompile Include="EnzymePanel.cpp" />
     <ClCompile Include="LigandStick.cpp" />
     <ClCompile Include="LigandSticks.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="ObjModel.cpp" />
     <ClCompile Include="PDBFileDemo.cpp" />
@@ -112,15 +115,20 @@
     <ClCompile Include="SSBondStick.cpp" />
     <ClCompile Include="Stick.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="VisibilityLabel.cpp" />
+    <ClCompile Include="VisibilitySlider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Atom.h" />
+    <ClInclude Include="AtomPanel.h" />
     <ClInclude Include="cubemap.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DemoCaveApplication.h" />
     <ClInclude Include="DemoCaveWeek2.h" />
+    <ClInclude Include="EnzymePanel.h" />
     <ClInclude Include="LigandStick.h" />
     <ClInclude Include="LigandSticks.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="ObjModel.h" />
     <ClInclude Include="PDBFileDemo.h" />
@@ -134,6 +142,8 @@
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="Vec3.h" />
     <ClInclude Include="Vector3D.h" />
+    <ClInclude Include="VisibilityLabel.h" />
+    <ClInclude Include="VisibilitySlider.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
