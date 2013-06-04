@@ -36,13 +36,13 @@ MainMenu::MainMenu(void) : GUIPanel("")
 	extraPanel->add(rotateL = new VisibilityLabel("Rotation: ",false));
 	extraPanel->add(rotateS = new VisibilitySlider(0,360,0,false));
 	extraPanel->add(zoomL = new VisibilityLabel("Zoom: ",false));
-	extraPanel->add(zoomS = new VisibilitySlider(0,1000,0,false));
+	extraPanel->add(zoomS = new VisibilitySlider(0,35,0,false));
 
 	rootPanel->setFont(font);
 	rootPanel->reposition(0,0,0.8f,1.5f);
 
 	renderMatrix = glm::mat4();
-	renderMatrix = glm::translate(renderMatrix, glm::vec3(-1.5,-0,-0));
+	renderMatrix = glm::translate(renderMatrix, glm::vec3(-1.5,-1,-0));
 	renderMatrix = glm::rotate(renderMatrix, 90.0f, glm::vec3(0,1,0));
 }
 

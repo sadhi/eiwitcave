@@ -120,7 +120,7 @@ void PDBFileDemo::contextInit()
 
 	if(fileToLoad.empty())
 	{
-		fileToLoad = "data/proteins/1DW5.pdb"; //3PTA //1DW5 //CutDNMT1
+		fileToLoad = "data/proteins/Test.pdb"; //3PTA //1DW5 //CutDNMT1
 	}
 	
 	processFile = new cProcessFile(fileToLoad);
@@ -467,47 +467,74 @@ void PDBFileDemo::MediumDraw(void)
 
 			if(processFile->Menu->ModeByElement)
 			{
-				//Color by element
-				if(!processFile->Atoms.at(i)->element.compare(" C"))
+				switch(processFile->Atoms.at(i)->color)
 				{
+				case 0:
 					glColor4f(0.5f, 0.5f, 0.5f, 1.0f); //Grijs
-				}
-				else if(!processFile->Atoms.at(i)->element.compare(" O"))
-				{
+					break;
+				case 1:
 					glColor4f(1.0f, 0.0f, 0.0f, 1.0f); //Rood
-				}
-				else if(!processFile->Atoms.at(i)->element.compare(" N"))
-				{
+					break;
+				case 2:
 					glColor4f(0.0f, 0.0f, 1.0f, 1.0f); //Blauw
-				}
-				else if(!processFile->Atoms.at(i)->element.compare(" P"))
-				{
+					break;
+				case 3:
 					glColor4f(1.0f, 0.5f, 0.0f, 1.0f); //Oranje
-				}
-				else if(!processFile->Atoms.at(i)->element.compare(" S"))
-				{
+					break;
+				case 4:
 					glColor4f(1.0f, 1.0f, 0.0f, 1.0f); //Geel
-				}
-				else if(!processFile->Atoms.at(i)->element.compare("ZN"))
-				{
+					break;
+				case 5:
 					glColor4f(0.5f, 1.0f, 0.0f, 1.0f); //Lila
-				}
-				else if(!processFile->Atoms.at(i)->element.compare(" H"))
-				{
-					if(!processFile->Menu->ModeHAtoms)
+					break;
+				case 6:
+					glColor4f(1.0f, 1.0f, 1.0f, 1.0f); //wit
+					break;
+				case -1:
+					//Color by element
+					if(!processFile->Atoms.at(i)->element.compare(" C"))
 					{
-					processFile->Atoms.at(i)->draw=false;
-					i++;
-					continue;
+						glColor4f(0.5f, 0.5f, 0.5f, 1.0f); //Grijs
 					}
-					glColor4f(1.0f, 1.0f, 1.0f, 1.0f); //Wit
-					processFile->Atoms.at(i)->draw=true;
+					else if(!processFile->Atoms.at(i)->element.compare(" O"))
+					{
+						glColor4f(1.0f, 0.0f, 0.0f, 1.0f); //Rood
+					}
+					else if(!processFile->Atoms.at(i)->element.compare(" N"))
+					{
+						glColor4f(0.0f, 0.0f, 1.0f, 1.0f); //Blauw
+					}
+					else if(!processFile->Atoms.at(i)->element.compare(" P"))
+					{
+						glColor4f(1.0f, 0.5f, 0.0f, 1.0f); //Oranje
+					}
+					else if(!processFile->Atoms.at(i)->element.compare(" S"))
+					{
+						glColor4f(1.0f, 1.0f, 0.0f, 1.0f); //Geel
+					}
+					else if(!processFile->Atoms.at(i)->element.compare("ZN"))
+					{
+						glColor4f(0.5f, 1.0f, 0.0f, 1.0f); //Lila
+					}
+					else if(!processFile->Atoms.at(i)->element.compare(" H"))
+					{
+						if(!processFile->Menu->ModeHAtoms)
+						{
+						processFile->Atoms.at(i)->draw=false;
+						i++;
+						continue;
+						}
+						glColor4f(1.0f, 1.0f, 1.0f, 1.0f); //Wit
+						processFile->Atoms.at(i)->draw=true;
 
+					}
+					else
+					{
+						glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+					}
+					break;
 				}
-				else
-				{
-					glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-				}
+				
 			}
 			else
 			{
@@ -678,39 +705,65 @@ void PDBFileDemo::MediumDraw(void)
 			}
 			if(processFile->Menu->ModeByElement)
 			{
-				//Color by element
-				if(!processFile->HETAtoms.at(i)->element.compare(" C"))
+				switch(processFile->HETAtoms.at(i)->color)
 				{
-					glColor3f(0.5f, 0.5f, 0.5f); //Grijs
-				}
-				else if(!processFile->HETAtoms.at(i)->element.compare(" O"))
-				{
-					glColor3f(1.0f, 0.0f, 0.0f); //Rood
-				}
-				else if(!processFile->HETAtoms.at(i)->element.compare(" N"))
-				{
-					glColor3f(0.0f, 0.0f, 1.0f); //Blauw
-				}
-				else if(!processFile->HETAtoms.at(i)->element.compare(" P"))
-				{
-					glColor3f(1.0f, 0.5f, 0.0f); //Oranje
-				}
-				else if(!processFile->HETAtoms.at(i)->element.compare(" S"))
-				{
-					glColor3f(1.0f, 1.0f, 0.0f); //Geel
-				}
-				else if(!processFile->HETAtoms.at(i)->element.compare("ZN"))
-				{
-					glColor3f(0.5f, 1.0f, 0.0f); //Lila
-				}
-				else if(!processFile->HETAtoms.at(i)->element.compare(" H"))
-				{
-					glColor3f(1.0f, 1.0f, 1.0f); //Wit
+				case 0:
+					glColor4f(0.5f, 0.5f, 0.5f, 1.0f); //Grijs
+					break;
+				case 1:
+					glColor4f(1.0f, 0.0f, 0.0f, 1.0f); //Rood
+					break;
+				case 2:
+					glColor4f(0.0f, 0.0f, 1.0f, 1.0f); //Blauw
+					break;
+				case 3:
+					glColor4f(1.0f, 0.5f, 0.0f, 1.0f); //Oranje
+					break;
+				case 4:
+					glColor4f(1.0f, 1.0f, 0.0f, 1.0f); //Geel
+					break;
+				case 5:
+					glColor4f(0.5f, 1.0f, 0.0f, 1.0f); //Lila
+					break;
+				case 6:
+					glColor4f(1.0f, 1.0f, 1.0f, 1.0f); //wit
+					break;
+				case -1:
+					//Color by element
+					if(!processFile->HETAtoms.at(i)->element.compare(" C"))
+					{
+						glColor3f(0.5f, 0.5f, 0.5f); //Grijs
+					}
+					else if(!processFile->HETAtoms.at(i)->element.compare(" O"))
+					{
+						glColor3f(1.0f, 0.0f, 0.0f); //Rood
+					}
+					else if(!processFile->HETAtoms.at(i)->element.compare(" N"))
+					{
+						glColor3f(0.0f, 0.0f, 1.0f); //Blauw
+					}
+					else if(!processFile->HETAtoms.at(i)->element.compare(" P"))
+					{
+						glColor3f(1.0f, 0.5f, 0.0f); //Oranje
+					}
+					else if(!processFile->HETAtoms.at(i)->element.compare(" S"))
+					{
+						glColor3f(1.0f, 1.0f, 0.0f); //Geel
+					}
+					else if(!processFile->HETAtoms.at(i)->element.compare("ZN"))
+					{
+						glColor3f(0.5f, 1.0f, 0.0f); //Lila
+					}
+					else if(!processFile->HETAtoms.at(i)->element.compare(" H"))
+					{
+						glColor3f(1.0f, 1.0f, 1.0f); //Wit
 
-				}
-				else
-				{
-					glColor3f(0.0f, 0.0f, 0.0f);
+					}
+					else
+					{
+						glColor3f(0.0f, 0.0f, 0.0f);
+					}
+					break;
 				}
 			}
 			else
