@@ -60,19 +60,19 @@
     <ClCompile Include="cubemap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
+    <ClCompile Include="..\..\..\..\SVN\AtomPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VisibilityLabel.cpp">
+    <ClCompile Include="..\..\..\..\SVN\MainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VisibilitySlider.cpp">
+    <ClCompile Include="..\..\..\..\SVN\VisibilityLabel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AtomPanel.cpp">
+    <ClCompile Include="..\..\..\..\SVN\VisibilitySlider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EnzymePanel.cpp">
+    <ClCompile Include="..\..\..\..\SVN\EnzymePanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -137,19 +137,19 @@
     <ClInclude Include="Defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenu.h">
+    <ClInclude Include="..\..\..\..\SVN\AtomPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VisibilityLabel.h">
+    <ClInclude Include="..\..\..\..\SVN\EnzymePanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VisibilitySlider.h">
+    <ClInclude Include="..\..\..\..\SVN\MainMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AtomPanel.h">
+    <ClInclude Include="..\..\..\..\SVN\VisibilityLabel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EnzymePanel.h">
+    <ClInclude Include="..\..\..\..\SVN\VisibilitySlider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

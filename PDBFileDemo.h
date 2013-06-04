@@ -2,9 +2,8 @@
 
 #include <VrLib/Application.h>
 #include <VrLib/Device.h>
-#include "Atom.h"
-
 #include <CaveLib/Plane.h>
+#include "Atom.h"
 #include <cavelib/Components/Panel.h>
 #include <cavelib/Components/Label.h>
 #include "MainMenu.h"
@@ -13,7 +12,6 @@
 
 class PDBFileDemo : public Application
 {
-	
 	MainMenu *menuPanel;
 	AtomPanel *atomPanel;
 	EnzymePanel *enzymePanel;
@@ -40,13 +38,17 @@ public:
 	void drawSphere(float size, float X, float Y, float Z);
 	void drawBlinkSphere(float size, float X, float Y, float Z);
 	float get3DDistance(float X1, float Y1, float Z1, float X2, float Y2, float Z2);
+	float sphereSize3DSelect;
+	bool selectSphereView;
+	float selectedAtom;
+
 private:
 	//int tickCount;
 	PositionalDevice  mWand;
 	PositionalDevice  mHead;
     DigitalDevice   mButton0;
 	DigitalDevice   mButton1;
-
+ 
 	DigitalDevice   mKeyPageUp;
     DigitalDevice   mKeyPageDown;
     DigitalDevice   mKeyF5;
@@ -55,10 +57,15 @@ private:
 	float ySize;
 	float zSize;
 
+	float DistanceAtom1, DistanceAtom2;
+	float OrbSelect;
+	float Xaddjust, Yaddjust;
+
 	Panel* rootPanel;
 	glm::mat4 renderMatrix;
 	cAtom atom1, atom2;
 	BOOL atom1selected;
+
 
 };
 
