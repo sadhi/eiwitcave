@@ -120,7 +120,7 @@ void PDBFileDemo::contextInit()
 
 	if(fileToLoad.empty())
 	{
-		fileToLoad = "data/proteins/Test.pdb"; //3PTA //1DW5 //CutDNMT1
+		fileToLoad = "data/proteins/1DW5.pdb"; //3PTA //1DW5 //CutDNMT1
 	}
 	
 	processFile = new cProcessFile(fileToLoad);
@@ -445,7 +445,7 @@ void PDBFileDemo::MediumDraw(void)
 	glDisable(GL_DEPTH_TEST);	
 	glColor4f(0.0f,0.3f,0.7f,0.1f);
 
-	 drawSphere(1.0, processFile->Atoms.at(OrbSelect)->location->X/10,processFile->Atoms.at(OrbSelect)->location->Y/10,processFile->Atoms.at(OrbSelect)->location->Z/10);
+	 drawSphere(1.0, processFile->Atoms.at(OrbSelect)->location->X/10,processFile->Atoms.at(OrbSelect)->location->Y/10,(processFile->Atoms.at(OrbSelect)->location->Z + menuPanel->zoomS->value)/10);
 	}
 	glEnable(GL_DEPTH_TEST);
 
@@ -567,7 +567,7 @@ void PDBFileDemo::MediumDraw(void)
 
 			float DistanceFromAtoomToHead=0;
 			if(processFile->Menu->Mode3DSelectie){
-				DistanceFromAtoomToHead = get3DDistance(processFile->Atoms.at(i)->location->X/10.0f,processFile->Atoms.at(i)->location->Y/10.0f,processFile->Atoms.at(i)->location->Z/10.0f,processFile->Atoms.at(OrbSelect)->location->X/10,processFile->Atoms.at(OrbSelect)->location->Y/10,processFile->Atoms.at(OrbSelect)->location->Z/10);
+				DistanceFromAtoomToHead = get3DDistance(processFile->Atoms.at(i)->location->X/10.0f,processFile->Atoms.at(i)->location->Y/10.0f,(processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f,processFile->Atoms.at(OrbSelect)->location->X/10,processFile->Atoms.at(OrbSelect)->location->Y/10,(processFile->Atoms.at(OrbSelect)->location->Z + menuPanel->zoomS->value)/10);
 			} else {
 					processFile->Atoms.at(i)->draw=true;
 			}
@@ -576,13 +576,13 @@ void PDBFileDemo::MediumDraw(void)
 					
 			glTranslatef((processFile->Atoms.at(i)->location->X/10.0f - positioningX), 
 				((processFile->Atoms.at(i)->location->Y/10.0f) - positioningY), 
-				((processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ));
+				(((processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ));
 
 			sphereModelMedium->draw();
 
 			glTranslatef((-1.0f * (processFile->Atoms.at(i)->location->X/10.0f - positioningX)), 
 				(-1.0f * ((processFile->Atoms.at(i)->location->Y/10.0f) - positioningY)), 
-				(-1.0f * ((processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ)));	
+				(-1.0f * (((processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ)));	
 				}else{
 					processFile->Atoms.at(i)->draw=false;
 			}
@@ -596,7 +596,7 @@ void PDBFileDemo::MediumDraw(void)
 					//2D
 				//	float tempdistance = get3DDistance((processFile->Atoms.at(i)->location->X/10.0f),(processFile->Atoms.at(i)->location->Y/10.0f),-5.3,positioningX+(wandForw[0])+((ret[0]-wandForw[0])/30)*30,positioningY+(wandForw[1])+((ret[1]-wandForw[1])/30)*30,-5.3);
 					//3D
-					float tempdistance = get3DDistance((processFile->Atoms.at(i)->location->X/10.0f),(processFile->Atoms.at(i)->location->Y/10.0f),(processFile->Atoms.at(i)->location->Z/10.0f),positioningX+(wandForw[0])+((ret[0]-wandForw[0])/checkdensity)*cnt,positioningY+(wandForw[1])+((ret[1]-wandForw[1])/checkdensity)*cnt,positioningZ+(wandForw[2])+((ret[2]-wandForw[2])/checkdensity)*cnt);
+					float tempdistance = get3DDistance((processFile->Atoms.at(i)->location->X/10.0f),(processFile->Atoms.at(i)->location->Y/10.0f),((processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f),positioningX+(wandForw[0])+((ret[0]-wandForw[0])/checkdensity)*cnt,positioningY+(wandForw[1])+((ret[1]-wandForw[1])/checkdensity)*cnt,positioningZ+(wandForw[2])+((ret[2]-wandForw[2])/checkdensity)*cnt);
 					if(DistanceFromAtoomToHead==0){
 					DistanceFromAtoomToHead=tempdistance;}
 					if(tempdistance<DistanceFromAtoomToHead)
@@ -641,9 +641,9 @@ void PDBFileDemo::MediumDraw(void)
 
 				float firstselecthop = ((sin((((Atomselectduration+37.5)/100)*M_PI))-0.75)*6);
 				cout << pow(firstselecthop,2) << endl;
-	drawBlinkSphere(0.1*pow(firstselecthop,2), processFile->Atoms.at(selectedAtom)->location->X/10.0f,processFile->Atoms.at(selectedAtom)->location->Y/10.0f,processFile->Atoms.at(selectedAtom)->location->Z/10.0f);
+	drawBlinkSphere(0.1*pow(firstselecthop,2), processFile->Atoms.at(selectedAtom)->location->X/10.0f,processFile->Atoms.at(selectedAtom)->location->Y/10.0f,(processFile->Atoms.at(selectedAtom)->location->Z + menuPanel->zoomS->value)/10.0f);
 	//pre Select Atom
-	drawBlinkSphere(0.05,  processFile->Atoms.at(AimedAtom)->location->X/10.0f,   processFile->Atoms.at(AimedAtom)->location->Y/10.0f,   processFile->Atoms.at(AimedAtom)->location->Z/10.0f);
+	drawBlinkSphere(0.05,  processFile->Atoms.at(AimedAtom)->location->X/10.0f,   processFile->Atoms.at(AimedAtom)->location->Y/10.0f,  ( processFile->Atoms.at(AimedAtom)->location->Z + menuPanel->zoomS->value)/10.0f);
 
 		glDisable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);	
@@ -659,15 +659,19 @@ void PDBFileDemo::MediumDraw(void)
 					float DistanceFromStickToHead=0;
 			if(processFile->Menu->Mode3DSelectie){
 
-				DistanceFromStickToHead = get3DDistance(processFile->Sticks->sticks[i][0]->X/10.0f,processFile->Sticks->sticks[i][0]->Y/10.0f,processFile->Sticks->sticks[i][0]->Z/10.0f,processFile->Atoms.at(OrbSelect)->location->X/10,processFile->Atoms.at(OrbSelect)->location->Y/10,processFile->Atoms.at(OrbSelect)->location->Z/10);
-				float DistanceFromStickToHead2 = get3DDistance(processFile->Sticks->sticks[i][1]->X/10.0f,processFile->Sticks->sticks[i][1]->Y/10.0f,processFile->Sticks->sticks[i][1]->Z/10.0f,processFile->Atoms.at(OrbSelect)->location->X/10,processFile->Atoms.at(OrbSelect)->location->Y/10,processFile->Atoms.at(OrbSelect)->location->Z/10);
+				DistanceFromStickToHead = get3DDistance(processFile->Sticks->sticks[i][0]->X/10.0f,processFile->Sticks->sticks[i][0]->Y/10.0f,processFile->Sticks->sticks[i][0]->Z/10.0f,processFile->Atoms.at(OrbSelect)->location->X/10,processFile->Atoms.at(OrbSelect)->location->Y/10,(processFile->Atoms.at(OrbSelect)->location->Z + menuPanel->zoomS->value)/10);
+				float DistanceFromStickToHead2 = get3DDistance(processFile->Sticks->sticks[i][1]->X/10.0f,processFile->Sticks->sticks[i][1]->Y/10.0f,processFile->Sticks->sticks[i][1]->Z/10.0f,processFile->Atoms.at(OrbSelect)->location->X/10,processFile->Atoms.at(OrbSelect)->location->Y/10,(processFile->Atoms.at(OrbSelect)->location->Z + menuPanel->zoomS->value)/10);
 				if(DistanceFromStickToHead2>DistanceFromStickToHead)
 				{DistanceFromStickToHead=DistanceFromStickToHead2;}
 			}
 			if(DistanceFromStickToHead<sphereSize3DSelect ){
-				processFile->Sticks[0].draw(true, i);
+				glTranslatef(0,0, (menuPanel->zoomS->value)/10);
+				processFile->Sticks[0].draw(false, i);
+				glTranslatef(0,0,- (menuPanel->zoomS->value)/10);
 			}else if (!selectSphereView) {
-				processFile->Sticks[0].draw(true, i);
+				glTranslatef(0,0, (menuPanel->zoomS->value)/10);
+				processFile->Sticks[0].draw(false, i);
+				glTranslatef(0,0,- (menuPanel->zoomS->value)/10);
 			}
 			i++;}
 		while(i < processFile->Sticks->sticks.size());
@@ -798,13 +802,13 @@ void PDBFileDemo::MediumDraw(void)
 			//TODO Trimming spaces
 			glTranslatef(((processFile->HETAtoms.at(i)->location->X/10.0f) - positioningX), 
 				((processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY), 
-				((processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ));
+				(((processFile->HETAtoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ));
 
 			sphereModelMedium->draw();
 
 			glTranslatef(-1.0f * ((processFile->HETAtoms.at(i)->location->X/10.0f - positioningX)), 
 				(-1.0f * ((processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY)), 
-				(-1.0f * ((processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ)));	
+				(-1.0f * (((processFile->HETAtoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ)));	
 			i++;
 		}
 		while(i < processFile->HETAtoms.size());
@@ -895,13 +899,13 @@ void PDBFileDemo::LowDraw(void)
 
 			glTranslatef(processFile->Atoms.at(i)->location->X/10.0f - positioningX, 
 				(processFile->Atoms.at(i)->location->Y/10.0f) - positioningY, 
-				(processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ);
+				((processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ);
 
 			sphereModelLow->draw();
 
 			glTranslatef(-1.0f * (processFile->Atoms.at(i)->location->X/10.0f - positioningX), 
 				-1.0f * ((processFile->Atoms.at(i)->location->Y/10.0f) - positioningY), 
-				-1.0f * ((processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ));	
+				-1.0f * (((processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ));	
 			i++;
 		}
 		while (i < processFile->Atoms.size());
@@ -1006,13 +1010,13 @@ void PDBFileDemo::LowDraw(void)
 			//TODO Trimming spaces
 			glTranslatef(processFile->HETAtoms.at(i)->location->X/10.0f - positioningX, 
 				(processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY, 
-				(processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ);
+				((processFile->HETAtoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ);
 
 			sphereModelLow->draw();
 
 			glTranslatef(-1.0f * (processFile->HETAtoms.at(i)->location->X/10.0f - positioningX), 
 				-1.0f * ((processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY), 
-				-1.0f * ((processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ));	
+				-1.0f * (((processFile->HETAtoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ));	
 			i++;
 		}// end i for loop
 		while( i < processFile->HETAtoms.size());
@@ -1103,13 +1107,13 @@ void PDBFileDemo::HighDraw(void)
 
 			glTranslatef(processFile->Atoms.at(i)->location->X/10.0f - positioningX, 
 				(processFile->Atoms.at(i)->location->Y/10.0f) - positioningY, 
-				(processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ);
+				((processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ);
 
 			sphereModelHigh->draw();
 
 			glTranslatef(-1.0f * (processFile->Atoms.at(i)->location->X/10.0f - positioningX), 
 				-1.0f * ((processFile->Atoms.at(i)->location->Y/10.0f) - positioningY), 
-				-1.0f * ((processFile->Atoms.at(i)->location->Z/10.0f) - positioningZ));	
+				-1.0f * (((processFile->Atoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ));	
 			i++;
 		}
 		while (i < processFile->Atoms.size());
@@ -1210,13 +1214,13 @@ void PDBFileDemo::HighDraw(void)
 			//TODO Trimming spaces
 			glTranslatef(processFile->HETAtoms.at(i)->location->X/10.0f - positioningX, 
 				(processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY, 
-				(processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ);
+				((processFile->HETAtoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ);
 
 			sphereModelHigh->draw();
 
 			glTranslatef(-1.0f * (processFile->HETAtoms.at(i)->location->X/10.0f - positioningX), 
 				-1.0f * ((processFile->HETAtoms.at(i)->location->Y/10.0f) - positioningY), 
-				-1.0f * ((processFile->HETAtoms.at(i)->location->Z/10.0f) - positioningZ));	
+				-1.0f * (((processFile->HETAtoms.at(i)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ));	
 			i++;
 		}// end i for loop
 		while (i < processFile->HETAtoms.size());
@@ -1287,24 +1291,24 @@ void PDBFileDemo::drawSphere(float size, float X, float Y, float Z)
 
 float PDBFileDemo::GetDisctanceBetweenAtoms(int Atom1, int Atom2)
 {
-	float Distance = get3DDistance(processFile->Atoms.at(Atom1)->location->X/10.0f,processFile->Atoms.at(Atom1)->location->Y/10.0f,processFile->Atoms.at(Atom1)->location->Z/10.0f,processFile->Atoms.at(Atom2)->location->X/10.0f,processFile->Atoms.at(Atom2)->location->Y/10.0f,processFile->Atoms.at(Atom2)->location->Z/10.0f);
+	float Distance = get3DDistance(processFile->Atoms.at(Atom1)->location->X/10.0f,processFile->Atoms.at(Atom1)->location->Y/10.0f,(processFile->Atoms.at(Atom1)->location->Z + menuPanel->zoomS->value)/10.0f,processFile->Atoms.at(Atom2)->location->X/10.0f,processFile->Atoms.at(Atom2)->location->Y/10.0f,(processFile->Atoms.at(Atom2)->location->Z + menuPanel->zoomS->value)/10.0f);
 
 				glColor4f(0.0f,1.0f,0.0f,1.0f);
-		drawBlinkSphere(0.06, processFile->Atoms.at(Atom1)->location->X/10.0f, processFile->Atoms.at(Atom1)->location->Y/10.0f, processFile->Atoms.at(Atom1)->location->Z/10.0f);
-		drawBlinkSphere(0.06, processFile->Atoms.at(Atom2)->location->X/10.0f, processFile->Atoms.at(Atom2)->location->Y/10.0f, processFile->Atoms.at(Atom2)->location->Z/10.0f);
+		drawBlinkSphere(0.06, processFile->Atoms.at(Atom1)->location->X/10.0f, processFile->Atoms.at(Atom1)->location->Y/10.0f, (processFile->Atoms.at(Atom1)->location->Z + menuPanel->zoomS->value)/10.0f);
+		drawBlinkSphere(0.06, processFile->Atoms.at(Atom2)->location->X/10.0f, processFile->Atoms.at(Atom2)->location->Y/10.0f, (processFile->Atoms.at(Atom2)->location->Z + menuPanel->zoomS->value)/10.0f);
 
 				glTranslatef(processFile->Atoms.at(Atom1)->location->X/10.0f - positioningX, 
 				(processFile->Atoms.at(Atom1)->location->Y/10.0f) - positioningY, 
-				(processFile->Atoms.at(Atom1)->location->Z/10.0f) - positioningZ);
+				((processFile->Atoms.at(Atom1)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ);
 
 	glBegin(GL_LINES);
-		  glVertex3f(processFile->Atoms.at(Atom2)->location->X/10.0f-(processFile->Atoms.at(Atom1)->location->X/10.0f), processFile->Atoms.at(Atom2)->location->Y/10.0f-(processFile->Atoms.at(Atom1)->location->Y/10.0f), processFile->Atoms.at(Atom2)->location->Z/10.0f-(processFile->Atoms.at(Atom1)->location->Z/10.0f));
+		  glVertex3f(processFile->Atoms.at(Atom2)->location->X/10.0f-(processFile->Atoms.at(Atom1)->location->X/10.0f), processFile->Atoms.at(Atom2)->location->Y/10.0f-(processFile->Atoms.at(Atom1)->location->Y/10.0f), (processFile->Atoms.at(Atom2)->location->Z + menuPanel->zoomS->value)/10.0f-((processFile->Atoms.at(Atom1)->location->Z + menuPanel->zoomS->value)/10.0f));
 		  glVertex3f(0,0,0);
 		 glEnd();
 
 			glTranslatef(-1.0f * (processFile->Atoms.at(Atom1)->location->X/10.0f - positioningX), 
 				-1.0f * ((processFile->Atoms.at(Atom1)->location->Y/10.0f) - positioningY), 
-				-1.0f * ((processFile->Atoms.at(Atom1)->location->Z/10.0f) - positioningZ));
+				-1.0f * (((processFile->Atoms.at(Atom1)->location->Z + menuPanel->zoomS->value)/10.0f) - positioningZ));
 
 			//std::cout << "Distance:" << Distance*10 << endl;
 		return Distance*10;
