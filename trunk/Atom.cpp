@@ -47,6 +47,38 @@ void cAtom::init(string* line)
 	string chargeStr = line->substr(78,2);
 	sscanf_s(chargeStr.c_str(), "%d", &charge);
 
+	string tmp  = line->substr(80,3);
+	color = -1;
+	if(tmp == (";  "))
+	{
+		color = 0;
+	}
+	else if(tmp == ("; R"))
+	{
+		color = 1;
+	}
+	else if(tmp == ("; B"))
+	{
+		color = 2;
+	}
+	else if(tmp == ("; O"))
+	{
+		color = 3;
+	}
+	else if(tmp == ("; G"))
+	{
+		color = 4;
+	}
+	else if(tmp == ("; L"))
+	{
+		color = 5;
+	}
+	else if(tmp == ("; W"))
+	{
+		color = 6;
+	}
+
+
 	draw=true;
 }
 

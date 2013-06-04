@@ -27,6 +27,7 @@ public:
 
 	bool isPartOfLigand;
 	bool draw;
+	int color;	//0 = grijs, 1 = rood, 2 = blauw, 3 = oranje, 4 = geel, 5 = lila, 6 = wit
 
 private:
 	//functions

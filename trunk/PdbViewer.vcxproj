@@ -96,11 +96,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\SVN\AtomPanel.cpp" />
-    <ClCompile Include="..\..\..\..\SVN\EnzymePanel.cpp" />
-    <ClCompile Include="..\..\..\..\SVN\MainMenu.cpp" />
-    <ClCompile Include="..\..\..\..\SVN\VisibilityLabel.cpp" />
-    <ClCompile Include="..\..\..\..\SVN\VisibilitySlider.cpp" />
+    <ClCompile Include="AtomPanel.cpp" />
+    <ClCompile Include="EnzymePanel.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="VisibilityLabel.cpp" />
+    <ClCompile Include="VisibilitySlider.cpp" />
     <ClCompile Include="Atom.cpp" />
     <ClCompile Include="cubemap.cpp" />
     <ClCompile Include="LigandStick.cpp" />
@@ -118,11 +118,11 @@
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\SVN\AtomPanel.h" />
-    <ClInclude Include="..\..\..\..\SVN\EnzymePanel.h" />
-    <ClInclude Include="..\..\..\..\SVN\MainMenu.h" />
-    <ClInclude Include="..\..\..\..\SVN\VisibilityLabel.h" />
-    <ClInclude Include="..\..\..\..\SVN\VisibilitySlider.h" />
+    <ClInclude Include="AtomPanel.h" />
+    <ClInclude Include="EnzymePanel.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="VisibilityLabel.h" />
+    <ClInclude Include="VisibilitySlider.h" />
     <ClInclude Include="Atom.h" />
     <ClInclude Include="cubemap.h" />
     <ClInclude Include="Defines.h" />
