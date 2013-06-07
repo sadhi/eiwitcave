@@ -3,6 +3,7 @@
 #include <cavelib/Components/Button.h>
 #include "VisibilityLabel.h"
 #include "VisibilitySlider.h"
+#include "VisibilityCheckBox.h"
 #include <cavelib/Components/CheckBox.h>
 
 class MainMenu :
@@ -19,11 +20,13 @@ public:
 	void setAtomMode();
 	void setMoveMode();
 	void centrate();
+	void clickCheckBox();
 
 	//buttons
 	Button* moveButton, *centrateButton;
 	VisibilitySlider *rotateS, *zoomS;
-	VisibilityLabel *rotateL, *zoomL;
+	VisibilityLabel *rotateL, *zoomL, *distanceL, *checkboxL;
+	VisibilityCheckBox *checkboxB;
 
 	bool ModeAtomInfo, ModeMeasureDistance;
 };

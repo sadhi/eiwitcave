@@ -14,6 +14,9 @@ public:
 	EnzymePanel(int, std::vector<cAtom*>);
 	~EnzymePanel(void);
 
+	void check();
+	std::vector<Label*> labels;
 	std::vector<CheckBox*> atomBoxes;
+	std::vector<cAtom*> Atoms;
 };
 

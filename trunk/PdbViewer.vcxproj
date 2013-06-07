@@ -99,6 +99,7 @@
     <ClCompile Include="AtomPanel.cpp" />
     <ClCompile Include="EnzymePanel.cpp" />
     <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="VisibilityCheckBox.cpp" />
     <ClCompile Include="VisibilityLabel.cpp" />
     <ClCompile Include="VisibilitySlider.cpp" />
     <ClCompile Include="Atom.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="AtomPanel.h" />
     <ClInclude Include="EnzymePanel.h" />
     <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="VisibilityCheckBox.h" />
     <ClInclude Include="VisibilityLabel.h" />
     <ClInclude Include="VisibilitySlider.h" />
     <ClInclude Include="Atom.h" />

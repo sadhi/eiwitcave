@@ -37,6 +37,10 @@ MainMenu::MainMenu(void) : GUIPanel("")
 	extraPanel->add(rotateS = new VisibilitySlider(0,360,0,false));
 	extraPanel->add(zoomL = new VisibilityLabel("Zoom: ",false));
 	extraPanel->add(zoomS = new VisibilitySlider(0,35,0,false));
+	extraPanel->add(NULL);
+	extraPanel->add(distanceL = new VisibilityLabel("Distance: 0 Å",false));
+	extraPanel->add(checkboxL = new VisibilityLabel("3D area",false));
+	extraPanel->add(checkboxB = new VisibilityCheckBox(false, fastdelegate::MakeDelegate(this, &MainMenu::clickCheckBox)));
 
 	rootPanel->setFont(font);
 	rootPanel->reposition(0,0,0.8f,1.5f);
@@ -59,6 +63,9 @@ void MainMenu::setRotationMode()
 	rotateS->setVisibility(true);
 	zoomL->setVisibility(false);
 	zoomS->setVisibility(false);
+	distanceL->setVisibility(false);
+	checkboxL->setVisibility(false);
+	checkboxB->setVisibility(false);
 }
 
 void MainMenu::setZoomMode()
@@ -69,6 +76,9 @@ void MainMenu::setZoomMode()
 	rotateS->setVisibility(false);
 	zoomL->setVisibility(true);
 	zoomS->setVisibility(true);
+	distanceL->setVisibility(false);
+	checkboxL->setVisibility(false);
+	checkboxB->setVisibility(false);
 }
 
 void MainMenu::setMeasureMode()
@@ -79,6 +89,9 @@ void MainMenu::setMeasureMode()
 	rotateS->setVisibility(false);
 	zoomL->setVisibility(false);
 	zoomS->setVisibility(false);
+	distanceL->setVisibility(true);
+	checkboxL->setVisibility(false);
+	checkboxB->setVisibility(false);
 }
 
 void MainMenu::setAtomMode()
@@ -89,6 +102,9 @@ void MainMenu::setAtomMode()
 	rotateS->setVisibility(false);
 	zoomL->setVisibility(false);
 	zoomS->setVisibility(false);
+	distanceL->setVisibility(false);
+	checkboxL->setVisibility(false);
+	checkboxB->setVisibility(false);
 }
 
 void MainMenu::setMoveMode()
@@ -99,6 +115,9 @@ void MainMenu::setMoveMode()
 	rotateS->setVisibility(false);
 	zoomL->setVisibility(false);
 	zoomS->setVisibility(false);
+	distanceL->setVisibility(false);
+	checkboxL->setVisibility(true);
+	checkboxB->setVisibility(true);
 }
 
 void MainMenu::centrate()
@@ -109,4 +128,12 @@ void MainMenu::centrate()
 	rotateS->setVisibility(false);
 	zoomL->setVisibility(false);
 	zoomS->setVisibility(false);
+	distanceL->setVisibility(false);
+	checkboxL->setVisibility(false);
+	checkboxB->setVisibility(false);
+}
+
+void MainMenu::clickCheckBox()
+{
+
 }
