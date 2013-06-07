@@ -9,17 +9,19 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 
-EnzymePanel::EnzymePanel(int size, std::vector<cAtom*> Atoms) : GUIPanel("")
+EnzymePanel::EnzymePanel(int size, std::vector<cAtom*> a) : GUIPanel("")
 {
 	rootPanel = new Panel(new TableLayoutManager(6));
 	string tmp = "";
+	Atoms = a;
 	for (int i = 0; i < size; i++)
 	{
 		if(Atoms.at(i)->residueName != tmp)
 		{
 			string txt = Atoms.at(i)->residueName;
-			rootPanel->add(new Label(txt));
-			atomBoxes.push_back(new CheckBox(false));
+			labels.push_back(new Label(txt));
+			rootPanel->add(labels.back());
+			atomBoxes.push_back(new CheckBox(false, fastdelegate::MakeDelegate(this, &EnzymePanel::check)));
 			rootPanel->add(atomBoxes.back());
 			tmp = Atoms.at(i)->residueName;
 		}
@@ -37,4 +39,30 @@ EnzymePanel::EnzymePanel(int size, std::vector<cAtom*> Atoms) : GUIPanel("")
 
 EnzymePanel::~EnzymePanel(void)
 {
+}
+
+void EnzymePanel::check()
+{
+	/*for(int i = 0; i < labels.size(); i++)
+	{
+		string tmp = "";
+		int k = 0;
+		for (int j = 0; j < Atoms.size; j++)
+		{
+			if(tmp == "")
+				tmp = Atoms.at(j)->residueName;
+			if(Atoms.at(j)->residueName != tmp && k != i)
+			{
+				tmp = Atoms.at(j)->residueName ;
+				
+			}
+			else
+			{
+				if(labels.at(i)->text == tmp)
+				{
+				}
+				break;
+			}
+		}
+	}*/
 }
